@@ -1885,7 +1885,23 @@ body {
   .lab-grid { grid-template-columns: 1fr; }
   .hero-grid { grid-template-columns: 1fr; }
   .hero-hud { margin-top: 24px; justify-self: start; }
-  .nav-links { display: none; }
+  .navbar {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+  .nav-left { order: 1; }
+  .nav-actions { order: 2; margin-left: auto; }
+  .nav-links {
+    order: 3;
+    display: flex;
+    flex: 1 0 100%;
+    min-width: 0;
+    justify-content: center;
+    gap: clamp(14px, 4vw, 32px);
+    padding-top: 8px;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .hero { padding-top: 148px; }
 }
 @media (max-width: 640px) {
   .showcase-grid { grid-template-columns: 1fr; }
@@ -1894,4 +1910,105 @@ body {
   .footer-note { text-align: left; }
   .hud-hint { font-size: 0.66rem; }
   .hud-collapse-btn { padding: 5px 8px; }
+  .navbar {
+    top: 8px;
+    width: calc(100% - 16px);
+    gap: 8px;
+    padding: 8px 10px;
+  }
+  .nav-left { flex: 1; min-width: 0; }
+  .nav-actions { flex: 0 0 auto; gap: 5px; }
+  .brand-mark { gap: 5px; min-width: 0; }
+  .brand-text {
+    font-size: 0.82rem;
+    letter-spacing: 0.035em;
+    white-space: nowrap;
+  }
+  .brand-tag,
+  .sound-label { display: none; }
+  #soundToggle {
+    width: 34px;
+    height: 34px;
+    justify-content: center;
+    padding: 0;
+  }
+  .cart-trigger { gap: 6px; padding: 7px 8px; font-size: 0.72rem; }
+  .cart-badge { min-width: 18px; height: 18px; padding: 0 4px; }
+  .nav-links {
+    justify-content: flex-start;
+    gap: 18px;
+    overflow-x: auto;
+    padding: 7px 2px 2px;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-link { flex: 0 0 auto; font-size: 0.72rem; }
+  .hero { padding: 132px 5vw 54px; }
+  .hero-title { font-size: clamp(2.2rem, 10.5vw, 3rem); }
+  .hero-desc { font-size: 0.9rem; }
+  .hero-cta-row { gap: 10px; margin-bottom: 24px; }
+  .hero-cta-row .btn { flex: 1 1 100%; padding: 11px 16px; }
+  .hero-metrics { width: 100%; justify-content: space-between; gap: 8px; padding: 12px; }
+  .metric-item { min-width: 0; }
+  .metric-val { font-size: 1.3rem; }
+  .metric-label { font-size: 0.66rem; }
+  .section { padding-top: 76px; }
+  .section-header { margin-bottom: 30px; }
+  .section-title { font-size: clamp(1.7rem, 8vw, 2.2rem); }
+  .section-subtitle { font-size: 0.88rem; }
+  .filter-bar { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 8px; }
+  .filter-pill { flex: 0 0 auto; }
+  .coffee-card { min-height: 270px; padding: 18px; }
+  .anatomy-panel,
+  .sommelier-shell,
+  .fighter-col,
+  .arena-center,
+  .lab-configurator { padding: 18px; }
+  .anatomy-title { font-size: 1.65rem; }
+  .anatomy-stats-row { gap: 8px; }
+  .stat-box { padding: 10px; }
+  .xray-cup-glass { width: 145px; height: 205px; }
+  .quiz-step { margin-bottom: 20px; }
+  .quiz-options { gap: 8px; }
+  .quiz-chip { padding: 9px 11px; font-size: 0.78rem; }
+  .slider-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 10px;
+  }
+  .slider-row > span:first-child { grid-column: 1 / -1; }
+  .slider-row input[type="range"] { grid-column: 1; grid-row: 2; width: 100%; min-width: 0; }
+  .slider-row .slider-val { grid-column: 2; grid-row: 2; }
+  .budget-toggle { grid-column: 1 / -1; min-width: 0; }
+  .mini-chip { max-width: 100%; }
+  .arena-board { gap: 14px; }
+  .vote-buttons { gap: 8px; }
+  .lab-grid { gap: 28px; }
+  .lab-submit-row .btn { flex: 1 1 100%; }
+  .receipt-stage { position: static; width: 100%; min-width: 0; }
+  .printer-slot { width: min(340px, 100%); }
+  .thermal-receipt { width: min(312px, 100%); }
+  .footer { margin-top: 64px; padding: 34px 5vw; }
+  .footer-note { text-align: left; overflow-wrap: anywhere; }
+  .toast-container { left: 16px; right: 16px; bottom: 16px; }
+}
+@media (max-width: 360px) {
+  .brand-text { font-size: 0.76rem; }
+  .nav-actions { gap: 4px; }
+  .cart-trigger { padding: 7px; }
+  .hud-card { padding: 16px; }
+  .hud-brand-pill { padding: 4px 7px; font-size: 0.58rem; }
+  .hud-hint { font-size: 0.58rem; }
+  .hud-collapse-btn { padding: 4px 7px; }
+  .hero-kicker {
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    gap: 6px;
+    padding: 6px 8px;
+    white-space: nowrap;
+  }
+  .hero-metrics { gap: 6px; padding: 10px; }
+  .metric-label { font-size: 0.62rem; }
+  .stat-v { font-size: 0.86rem; }
+  .vote-btn { padding: 9px 8px; font-size: 0.76rem; }
 }

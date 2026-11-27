@@ -1039,6 +1039,91 @@
     });
   }
 
+  function initHudPanel() {
+    const panel = $('.hud-card');
+    const handle = $('.hud-header', panel);
+    const collapseButton = $('#hudCollapseBtn');
+    const hero = $('#hero');
+    let position = { x: 0, y: 0 };
+    let drag = null;
+
+    collapseButton.addEventListener('click', () => {
+      const collapsed = panel.classList.toggle('collapsed');
+      collapseButton.setAttribute('aria-expanded', String(!collapsed));
+      collapseButton.setAttribute(
+        'aria-label',
+        collapsed ? '展开咖啡信息面板' : '收起咖啡信息面板'
+      );
+      collapseButton.textContent = collapsed ? '展开' : '收起';
+      setPosition(position.x, position.y);
+    });
+
+    function setPosition(x, y) {
+      const panelRect = panel.getBoundingClientRect();
+      const heroRect = hero.getBoundingClientRect();
+      const originLeft = panelRect.left - position.x;
+      const originTop = panelRect.top - position.y;
+      const minX = heroRect.left + 12 - originLeft;
+      const maxX = heroRect.right - 12 - originLeft - panelRect.width;
+      const minY = heroRect.top + 12 - originTop;
+      const maxY = heroRect.bottom - 12 - originTop - panelRect.height;
+
+      position = {
+        x: Math.max(minX, Math.min(maxX, x)),
+        y: Math.max(minY, Math.min(maxY, y))
+      };
+      panel.style.transform = 'translate3d(' + position.x + 'px, ' + position.y + 'px, 0)';
+    }
+
+    handle.addEventListener('pointerdown', (event) => {
+      if (event.target.closest('button')) return;
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+
+      drag = {
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        offsetX: position.x,
+        offsetY: position.y
+      };
+      handle.setPointerCapture(event.pointerId);
+      panel.classList.add('is-dragging');
+      event.preventDefault();
+    });
+
+    handle.addEventListener('pointermove', (event) => {
+      if (!drag || drag.pointerId !== event.pointerId) return;
+      setPosition(
+        drag.offsetX + event.clientX - drag.startX,
+        drag.offsetY + event.clientY - drag.startY
+      );
+    });
+
+    function stopDragging(event) {
+      if (!drag || drag.pointerId !== event.pointerId) return;
+      drag = null;
+      panel.classList.remove('is-dragging');
+    }
+
+    handle.addEventListener('pointerup', stopDragging);
+    handle.addEventListener('pointercancel', stopDragging);
+    window.addEventListener('resize', () => setPosition(position.x, position.y));
+
+    handle.addEventListener('keydown', (event) => {
+      if (event.target !== handle) return;
+      const directions = {
+        ArrowLeft: [-16, 0],
+        ArrowRight: [16, 0],
+        ArrowUp: [0, -16],
+        ArrowDown: [0, 16]
+      };
+      const direction = directions[event.key];
+      if (!direction) return;
+      event.preventDefault();
+      setPosition(position.x + direction[0], position.y + direction[1]);
+    });
+  }
+
   /* -------------------- 13. BOOTSTRAP -------------------- */
   document.addEventListener('DOMContentLoaded', () => {
     const fill = $('#preloaderFill');
@@ -1054,7 +1139,7 @@
       fill.style.width = p + '%';
     }, 110);
 
-    if (typeof window.CoffeeStage3D === 'function') {
+    if (typeof window.CoffeeStage3D === 'function' && typeof THREE !== 'undefined') {
       stage3D = new window.CoffeeStage3D('heroCanvas');
     }
 
@@ -1066,6 +1151,7 @@
     initArena();
     const labCtrl = initBaristaLab();
     initCursorAndMotion();
+    initHudPanel();
 
     $$('.theme-btn').forEach((btn) => {
       btn.addEventListener('click', () => {

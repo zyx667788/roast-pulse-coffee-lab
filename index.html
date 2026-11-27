@@ -120,22 +120,37 @@
         </div>
       </div>
 
-      <!-- Floating Interactive 3D HUD Panel -->
-      <div class="hero-hud">
-        <div class="hud-card">
+      <!-- Floating Interactive 3D HUD Panel (Collapsible) -->
+      <div class="hero-hud" id="heroHud">
+        <div class="hud-card" id="hudCard">
           <div class="hud-header">
-            <span class="hud-brand-pill" id="hudBrandPill">STARBUCKS RESERVE</span>
-            <span class="hud-hint">拖拽 360° 检视杯体</span>
+            <div class="hud-header-left">
+              <span class="hud-brand-pill" id="hudBrandPill">STARBUCKS RESERVE</span>
+              <span class="hud-mini-title" id="hudMiniTitle">馥芮白</span>
+            </div>
+            <div class="hud-header-right">
+              <span class="hud-hint">拖拽 360° 检视杯体</span>
+              <button class="hud-collapse-btn" id="hudCollapseBtn" type="button" aria-expanded="true" title="收起/展开3D控制台">
+                <span class="hud-collapse-text" id="hudCollapseText">收起</span>
+                <svg class="hud-collapse-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+            </div>
           </div>
-          <h2 class="hud-drink-name" id="hudDrinkName">馥芮白 · Flat White</h2>
-          <p class="hud-drink-sub" id="hudDrinkSub">精萃浓缩 × 丝绒微奶泡 · 坚果焦糖尾韵</p>
+          <div class="hud-body" id="hudBody">
+            <div class="hud-body-inner">
+              <h2 class="hud-drink-name" id="hudDrinkName">馥芮白 · Flat White</h2>
+              <p class="hud-drink-sub" id="hudDrinkSub">精萃浓缩 × 丝绒微奶泡 · 坚果焦糖尾韵</p>
 
-          <div class="hud-quick-switcher" id="hudQuickSwitcher"></div>
+              <div class="hud-quick-switcher" id="hudQuickSwitcher"></div>
 
-          <div class="hud-controls">
-            <button class="hud-chip active" id="toggleIceMode" data-temp="iced">❄ 冰杯凝露</button>
-            <button class="hud-chip" id="toggleHotMode" data-temp="hot">♨ 热杯蒸汽</button>
-            <button class="hud-chip" id="toggleExplodeMode">✦ 拆解图层</button>
+              <div class="hud-controls">
+                <button class="hud-chip active" id="toggleIceMode" data-temp="iced">❄ 冰杯凝露</button>
+                <button class="hud-chip" id="toggleHotMode" data-temp="hot">♨ 热杯蒸汽</button>
+                <button class="hud-chip" id="toggleExplodeMode">✦ 拆解图层</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

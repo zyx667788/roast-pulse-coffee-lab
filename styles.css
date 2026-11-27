@@ -543,76 +543,36 @@ body {
   background: var(--border-subtle);
 }
 
-/* Hero 3D HUD (Collapsible) */
+/* Hero 3D HUD */
 .hero-hud {
   justify-self: end;
   align-self: end;
   margin-top: 260px;
   width: min(390px, 100%);
-  transition: width 0.45s var(--ease-expo);
-}
-.hero-hud.is-collapsed {
-  width: min(315px, 100%);
 }
 .hud-card {
   background: rgba(15, 13, 12, 0.74);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
-  padding: 20px 22px;
+  padding: 22px;
   backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
-  transition: padding 0.4s var(--ease-expo), border-radius 0.4s var(--ease-expo), background 0.3s ease;
-}
-.hud-card.collapsed {
-  padding: 11px 16px;
-  border-radius: 999px;
-  background: rgba(15, 13, 12, 0.86);
 }
 .hud-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
   margin-bottom: 10px;
-  transition: margin-bottom 0.35s var(--ease-expo);
-}
-.hud-card.collapsed .hud-header {
-  margin-bottom: 0;
-}
-.hud-header-left,
-.hud-header-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-.hud-mini-title {
-  font-size: 0.84rem;
-  font-weight: 700;
-  color: var(--text-main);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 0;
-  opacity: 0;
-  transition: max-width 0.35s var(--ease-expo), opacity 0.25s ease;
-}
-.hud-card.collapsed .hud-mini-title {
-  max-width: 110px;
-  opacity: 1;
 }
 .hud-brand-pill {
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: 0.68rem;
   font-weight: 700;
   padding: 4px 10px;
   border-radius: 99px;
   background: rgba(30, 168, 116, 0.16);
   color: var(--sbx-glow);
   border: 1px solid rgba(30, 168, 116, 0.35);
-  white-space: nowrap;
-  flex-shrink: 0;
 }
 .hud-brand-pill.luckin {
   background: rgba(59, 130, 246, 0.18);
@@ -622,52 +582,6 @@ body {
 .hud-hint {
   font-size: 0.72rem;
   color: var(--text-muted);
-  white-space: nowrap;
-}
-.hud-card.collapsed .hud-hint {
-  display: none;
-}
-.hud-collapse-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  border-radius: 99px;
-  border: 1px solid var(--border-strong);
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--accent-gold);
-  font-size: 0.72rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: all 0.25s ease;
-}
-.hud-collapse-btn:hover {
-  background: rgba(216, 173, 122, 0.18);
-  border-color: var(--accent-gold);
-  color: #fff;
-}
-.hud-collapse-icon {
-  transition: transform 0.38s var(--ease-expo);
-}
-.hud-card.collapsed .hud-collapse-icon {
-  transform: rotate(180deg);
-}
-.hud-body {
-  display: grid;
-  grid-template-rows: 1fr;
-  opacity: 1;
-  transition: grid-template-rows 0.45s var(--ease-expo), opacity 0.28s ease;
-}
-.hud-card.collapsed .hud-body {
-  grid-template-rows: 0fr;
-  opacity: 0;
-  pointer-events: none;
-}
-.hud-body-inner {
-  overflow: hidden;
 }
 .hud-drink-name {
   font-family: var(--font-display);
@@ -1314,6 +1228,7 @@ body {
 }
 .ring-fg {
   fill: none;
+  stroke: url(#ringGrad);
   stroke: var(--accent-gold);
   stroke-width: 8;
   stroke-linecap: round;

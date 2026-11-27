@@ -10,119 +10,509 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Custom Cursor -->
   <div class="cursor-dot" id="cursorDot"></div>
   <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Cinematic Intro Preloader -->
   <div class="preloader" id="preloader">
     <div class="preloader-inner">
-      <div class="preloader-emblem"><span class="emblem-sbx">STARBUCKS RESERVE</span><span class="emblem-x">×</span><span class="emblem-lkn">LUCKIN CRAFT</span></div>
+      <div class="preloader-emblem">
+        <span class="emblem-sbx">STARBUCKS RESERVE</span>
+        <span class="emblem-x">×</span>
+        <span class="emblem-lkn">LUCKIN CRAFT</span>
+      </div>
       <div class="preloader-bar"><div class="preloader-fill" id="preloaderFill"></div></div>
       <div class="preloader-meta" id="preloaderMeta">CALIBRATING ESPRESSO EXTRACTION · 9 BAR · 93°C</div>
     </div>
   </div>
+
+  <!-- Ambient Background Canvas & Grain -->
   <div class="noise-overlay"></div>
   <div class="ambient-glow ambient-glow-left"></div>
   <div class="ambient-glow ambient-glow-right"></div>
+
+  <!-- Top Navigation -->
   <header class="navbar" id="navbar">
-    <div class="nav-left"><a href="#hero" class="brand-mark"><span class="brand-dot sbx-dot"></span><span class="brand-dot lkn-dot"></span><span class="brand-text">ROAST<span class="brand-amp">&</span>PULSE</span><span class="brand-tag">2026 EDITION</span></a></div>
-    <nav class="nav-links"><a href="#showcase" class="nav-link">3D 风味殿堂</a><a href="#sommelier" class="nav-link">AI 寻豆罗盘</a><a href="#arena" class="nav-link">双雄对决台</a><a href="#lab" class="nav-link">特调工坊</a></nav>
+    <div class="nav-left">
+      <a href="#hero" class="brand-mark">
+        <span class="brand-dot sbx-dot"></span>
+        <span class="brand-dot lkn-dot"></span>
+        <span class="brand-text">ROAST<span class="brand-amp">&</span>PULSE</span>
+        <span class="brand-tag">2026 EDITION</span>
+      </a>
+    </div>
+
+    <nav class="nav-links">
+      <a href="#showcase" class="nav-link">3D 风味殿堂</a>
+      <a href="#sommelier" class="nav-link">AI 寻豆罗盘</a>
+      <a href="#arena" class="nav-link">双雄对决台</a>
+      <a href="#lab" class="nav-link">特调工坊</a>
+    </nav>
+
     <div class="nav-actions">
-      <div class="theme-switcher" role="group" aria-label="品牌主题切换"><button class="theme-btn active" data-set-theme="dual">双雄</button><button class="theme-btn" data-set-theme="starbucks">星巴克</button><button class="theme-btn" data-set-theme="luckin">瑞幸</button></div>
-      <button class="sound-toggle" id="soundToggle" type="button"><span class="sound-bars"><i></i><i></i><i></i></span><span class="sound-label">声景 OFF</span></button>
-      <button class="cart-trigger" id="cartTrigger" type="button">点单袋 <span class="cart-count" id="cartCount">0</span></button>
+      <div class="theme-switcher" role="group" aria-label="品牌氛围切换">
+        <button class="theme-btn" data-set-theme="starbucks" title="星巴克臻选氛围">星巴克</button>
+        <button class="theme-btn active" data-set-theme="dual" title="双品牌对决模式">双雄</button>
+        <button class="theme-btn" data-set-theme="luckin" title="瑞幸大师氛围">瑞幸</button>
+      </div>
+      <button class="icon-btn" id="soundToggle" title="开启/关闭意式咖啡馆环境音效">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path class="sound-wave" d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path class="sound-wave" d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+        <span class="sound-label">声景 OFF</span>
+      </button>
+      <button class="cart-trigger" id="cartTrigger">
+        <span>点单袋</span>
+        <span class="cart-badge" id="cartCount">0</span>
+      </button>
     </div>
   </header>
-  <main>
-    <section class="hero" id="hero">
+
+  <!-- HERO SECTION WITH INTERACTIVE 3D THREE.JS STAGE -->
+  <section class="hero" id="hero">
+    <div class="hero-canvas-wrap" id="hero3dContainer">
       <canvas id="heroCanvas"></canvas>
-      <div class="hero-hud" id="heroHud">
-        <div class="hud-card" id="hudCard">
-          <div class="hud-header"><span class="hud-brand-pill" id="hudBrandPill">STARBUCKS RESERVE</span><span class="hud-mini-title" id="hudMiniTitle">馥芮白</span><button class="hud-collapse-btn" id="hudCollapseBtn" type="button" aria-expanded="true"><span id="hudCollapseText">收起</span></button></div>
-          <h1 class="hud-title" id="hudDrinkName">馥芮白 · Flat White</h1>
-          <p class="hud-sub" id="hudDrinkSub">精萃浓缩遇上丝绒微奶泡，每一口都是坚果与焦糖的丝滑重击。</p>
-          <div class="hud-controls"><button class="btn btn-primary" id="heroPourBtn" type="button">9 Bar 萃取注入</button><button class="btn btn-ghost active" id="toggleIceMode" type="button">冰饮</button><button class="btn btn-ghost" id="toggleHotMode" type="button">热饮</button><button class="btn btn-ghost" id="toggleExplodeMode" type="button">分层爆炸</button></div>
+    </div>
+
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="hero-kicker">
+          <span class="pulse-dot"></span>
+          <span>INTERACTIVE 3D COFFEE CURATION · 双重烘焙美学</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="title-line">翠绿臻选</span>
+          <span class="title-line title-italic">与<span class="text-cobalt">冰蓝脉冲</span>的</span>
+          <span class="title-line">风味交响。</span>
+        </h1>
+        <p class="hero-desc">
+          当西雅图百年深烘哲学遇上中国新锐爆款实验室——在这里实时旋转 3D 咖啡杯体、拆解每一毫升奶咖配比、解锁门店隐藏暗号，找到今天最契合你多巴胺的那一杯。
+        </p>
+        <div class="hero-cta-row">
+          <a href="#sommelier" class="btn btn-primary magnetic">
+            <span>启动 AI 选杯罗盘</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <button class="btn btn-glass magnetic" id="heroPourBtn">
+            <span>触发 3D 浓缩萃取</span>
+            <span class="btn-badge">9 BAR</span>
+          </button>
+        </div>
+
+        <div class="hero-metrics">
+          <div class="metric-item">
+            <div class="metric-val" data-count="8">0</div>
+            <div class="metric-label">王牌封神单品</div>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-item">
+            <div class="metric-val" data-count="93">0</div>
+            <div class="metric-label">°C 黄金萃取温区</div>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-item">
+            <div class="metric-val" data-count="128">0</div>
+            <div class="metric-label">种客制化风味组合</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating Interactive 3D HUD Panel -->
+      <div class="hero-hud">
+        <div class="hud-card">
+          <div class="hud-header">
+            <span class="hud-brand-pill" id="hudBrandPill">STARBUCKS RESERVE</span>
+            <span class="hud-hint">拖拽 360° 检视杯体</span>
+          </div>
+          <h2 class="hud-drink-name" id="hudDrinkName">馥芮白 · Flat White</h2>
+          <p class="hud-drink-sub" id="hudDrinkSub">精萃浓缩 × 丝绒微奶泡 · 坚果焦糖尾韵</p>
+
           <div class="hud-quick-switcher" id="hudQuickSwitcher"></div>
-        </div>
-      </div>
-    </section>
-    <section class="section showcase" id="showcase">
-      <div class="container">
-        <div class="section-head reveal"><span class="section-kicker">SIGNATURE CATALOG</span><h2 class="section-title">八大巅峰招牌风味透视</h2><div class="filter-pills"><button class="filter-pill active" data-filter="all">全部 (8)</button><button class="filter-pill" data-filter="starbucks">星巴克</button><button class="filter-pill" data-filter="luckin">瑞幸</button><button class="filter-pill" data-filter="lowcal">轻卡低脂</button><button class="filter-pill" data-filter="highcaf">高提神</button></div></div>
-        <div class="showcase-layout">
-          <div class="product-grid" id="productGrid"></div>
-          <aside class="anatomy-panel" id="anatomyPanel">
-            <span class="anatomy-badge" id="anatomyBrand">STARBUCKS RESERVE</span>
-            <h3 class="anatomy-title" id="anatomyTitle">馥芮白 · Flat White</h3>
-            <p class="anatomy-story" id="anatomyStory"></p>
-            <div class="anatomy-metrics"><div><span>咖啡因</span><strong id="anatomyCaf">195 mg</strong></div><div><span>热量</span><strong id="anatomyKcal">170 kcal</strong></div><div><span>参考价格</span><strong id="anatomyPrice">¥38</strong></div><div><span>烘焙萃取</span><strong id="anatomyRoast">中深烘</strong></div></div>
-            <div class="xray-box"><div class="xray-layers" id="xrayLayers"></div><div class="xray-legend" id="xrayLegend"></div></div>
-            <svg class="radar-svg" id="anatomyRadar" viewBox="0 0 260 260"></svg>
-            <div class="anatomy-notes" id="anatomyNotes"></div>
-            <div class="hack-box"><p id="anatomyHack"></p><button class="btn btn-ghost" id="copyHackBtn" type="button">复制点单暗号</button></div>
-            <div class="anatomy-actions"><button class="btn btn-primary" id="anatomyAddCart" type="button">加入点单袋</button><button class="btn btn-ghost" id="anatomyToLab" type="button">送入特调工坊</button></div>
-          </aside>
-        </div>
-      </div>
-    </section>
-    <section class="section sommelier" id="sommelier">
-      <div class="container">
-        <div class="section-head reveal"><span class="section-kicker">AI FLAVOR SOMMELIER</span><h2 class="section-title">30 秒 AI 寻豆选杯罗盘</h2></div>
-        <div class="sommelier-grid">
-          <div class="quiz-panel">
-            <div class="quiz-group"><label>此刻状态</label><div class="quiz-options" data-quiz="mood"><button class="quiz-chip active" data-val="wake">强效醒神</button><button class="quiz-chip" data-val="chill">午后松弛</button><button class="quiz-chip" data-val="sweet">甜品治愈</button><button class="quiz-chip" data-val="fresh">清爽解腻</button></div></div>
-            <div class="quiz-group"><label>奶基偏好</label><div class="quiz-options" data-quiz="milk"><button class="quiz-chip active" data-val="creamy">丝绒乳脂</button><button class="quiz-chip" data-val="plant">植物椰燕</button><button class="quiz-chip" data-val="clean">纯净果咖</button></div></div>
-            <div class="quiz-group"><label>浓醇度：<span id="prefIntensityVal">6/10</span></label><input type="range" id="prefIntensity" min="1" max="10" value="6" /></div>
-            <div class="quiz-group"><label>甜润度：<span id="prefSweetnessVal">5/10</span></label><input type="range" id="prefSweetness" min="1" max="10" value="5" /></div>
-            <div class="quiz-group"><label>预算倾向</label><div class="budget-toggle"><button class="mini-chip active" data-budget="any">不限</button><button class="mini-chip" data-budget="value">高性价比</button><button class="mini-chip" data-budget="premium">精品体验</button></div></div>
-          </div>
-          <div class="result-card" id="sommelierResult">
-            <div class="match-ring-wrap"><svg viewBox="0 0 120 120" class="match-ring"><circle cx="60" cy="60" r="52" class="ring-bg" /><circle cx="60" cy="60" r="52" class="ring-fg" id="matchRingFg" stroke-dasharray="326.7" stroke-dashoffset="40" /></svg><div class="match-score"><strong id="matchScoreNum">92</strong><span>匹配</span></div></div>
-            <span class="result-brand" id="resultBrand">LUCKIN CRAFT</span>
-            <h3 class="result-name" id="resultName">生椰拿铁 · ¥19</h3>
-            <p class="result-reason" id="resultReason"></p>
-            <p class="result-runnerup" id="resultRunnerup"></p>
-            <div class="result-actions"><button class="btn btn-primary" id="resultView3D" type="button">3D 舞台试饮</button><button class="btn btn-ghost" id="resultAddCart" type="button">加入点单袋</button></div>
+
+          <div class="hud-controls">
+            <button class="hud-chip active" id="toggleIceMode" data-temp="iced">❄ 冰杯凝露</button>
+            <button class="hud-chip" id="toggleHotMode" data-temp="hot">♨ 热杯蒸汽</button>
+            <button class="hud-chip" id="toggleExplodeMode">✦ 拆解图层</button>
           </div>
         </div>
       </div>
-    </section>
-    <section class="section arena" id="arena">
-      <div class="container">
-        <div class="section-head reveal"><span class="section-kicker">HEAD-TO-HEAD ARENA</span><h2 class="section-title">星巴克 × 瑞幸双雄对决台</h2></div>
-        <div class="arena-selectors"><select id="arenaSelectSbx"></select><span class="vs-badge">VS</span><select id="arenaSelectLkn"></select></div>
-        <div class="arena-grid"><div class="fighter-card" id="arenaCardSbx"></div><div class="arena-radar-box"><svg id="arenaRadar" viewBox="0 0 300 300"></svg><p class="arena-verdict" id="arenaVerdict"></p></div><div class="fighter-card" id="arenaCardLkn"></div></div>
-        <div class="vote-bar-wrap"><div class="vote-buttons"><button class="btn btn-ghost" id="voteSbxBtn" type="button">支持星巴克</button><button class="btn btn-ghost" id="voteLknBtn" type="button">支持瑞幸</button></div><div class="vote-track"><div class="vote-fill-sbx" id="voteFillSbx">50%</div><div class="vote-fill-lkn" id="voteFillLkn">50%</div></div></div>
+    </div>
+
+    <div class="scroll-cue">
+      <span>SCROLL TO EXPLORE</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- KINETIC MARQUEE -->
+  <div class="marquee-strip">
+    <div class="marquee-track">
+      <span>STARBUCKS 馥芮白 FLAT WHITE</span><span class="sep">◆</span>
+      <span>LUCKIN 生椰拿铁 RAW COCONUT LATTE</span><span class="sep">◆</span>
+      <span>STARBUCKS 焦糖玛奇朵 CARAMEL MACCHIATO</span><span class="sep">◆</span>
+      <span>LUCKIN 小黄油拿铁 BUTTER LATTE</span><span class="sep">◆</span>
+      <span>STARBUCKS 冰震浓缩 SHAKEN ESPRESSO</span><span class="sep">◆</span>
+      <span>LUCKIN 轻轻茉莉 JASMINE TEA LATTE</span><span class="sep">◆</span>
+      <span>STARBUCKS 绵云冷萃 COLD FOAM BREW</span><span class="sep">◆</span>
+      <span>LUCKIN 橙C美式 ORANGE AMERICANO</span><span class="sep">◆</span>
+      <span>STARBUCKS 馥芮白 FLAT WHITE</span><span class="sep">◆</span>
+      <span>LUCKIN 生椰拿铁 RAW COCONUT LATTE</span><span class="sep">◆</span>
+      <span>STARBUCKS 焦糖玛奇朵 CARAMEL MACCHIATO</span><span class="sep">◆</span>
+      <span>LUCKIN 小黄油拿铁 BUTTER LATTE</span><span class="sep">◆</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: CURATED SHOWCASE & LIQUID ANATOMY -->
+  <section class="section showcase-section" id="showcase">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">01 / SIGNATURE COLLECTION</div>
+      <h2 class="section-title">双品牌封神饮品矩阵</h2>
+      <p class="section-subtitle">点击任意一杯，立即同步上方 3D 杯体材质，并在下方透视液体黄金配比与门店隐藏点单暗号。</p>
+      <div class="filter-bar">
+        <button class="filter-pill active" data-filter="all">全部臻选 (8)</button>
+        <button class="filter-pill sbx-pill" data-filter="starbucks">星巴克 Starbucks (4)</button>
+        <button class="filter-pill lkn-pill" data-filter="luckin">瑞幸 Luckin (4)</button>
+        <button class="filter-pill" data-filter="lowcal">轻负担低卡</button>
+        <button class="filter-pill" data-filter="highcaf">强效续命</button>
       </div>
-    </section>
-    <section class="section lab" id="lab">
-      <div class="container">
-        <div class="section-head reveal"><span class="section-kicker">BARISTA CUSTOM LAB</span><h2 class="section-title">客制化特调工坊与热敏处方小票</h2></div>
-        <div class="lab-grid">
-          <div class="lab-controls">
-            <div class="quiz-group"><label>选择基底饮品</label><select id="labBaseDrink"></select></div>
-            <div class="quiz-group"><label>浓缩份数</label><div class="lab-chips" data-lab="shots"><button class="lab-chip" data-val="1" data-price="0" data-caf="75" data-kcal="5">单份 (1 Shot)</button><button class="lab-chip active" data-val="2" data-price="0" data-caf="150" data-kcal="10">标准双份 (2 Shots)</button><button class="lab-chip" data-val="3" data-price="5" data-caf="225" data-kcal="15">三份狂暴 (+¥5)</button></div></div>
-            <div class="quiz-group"><label>乳基与植物奶</label><div class="lab-chips" data-lab="milk"><button class="lab-chip active" data-val="whole" data-price="0" data-kcal="110">全脂鲜牛乳</button><button class="lab-chip" data-val="oat" data-price="4" data-kcal="125">燕麦奶 (+¥4)</button><button class="lab-chip" data-val="coconut" data-price="3" data-kcal="130">冷榨厚椰乳 (+¥3)</button><button class="lab-chip" data-val="none" data-price="0" data-kcal="0">纯黑咖基底</button></div></div>
-            <div class="quiz-group"><label>冰量温度</label><div class="lab-chips" data-lab="ice"><button class="lab-chip active" data-val="标准冰">标准冰</button><button class="lab-chip" data-val="少冰">少冰</button><button class="lab-chip" data-val="去冰">去冰</button><button class="lab-chip" data-val="热饮">热饮</button></div></div>
-            <div class="quiz-group"><label>甜度调节</label><div class="lab-chips" data-lab="sweet"><button class="lab-chip" data-val="0" data-kcal="0">不另外加糖</button><button class="lab-chip active" data-val="50" data-kcal="45">半糖</button><button class="lab-chip" data-val="100" data-kcal="90">全糖</button></div></div>
-            <div class="quiz-group"><label>风味顶料</label><div class="lab-chips" data-lab="topping"><button class="lab-chip active" data-val="none" data-price="0" data-kcal="0">无顶料</button><button class="lab-chip" data-val="foam" data-price="4" data-kcal="35">绵云冷奶沫 (+¥4)</button><button class="lab-chip" data-val="caramel" data-price="3" data-kcal="55">海盐焦糖酱 (+¥3)</button></div></div>
-            <div class="quiz-group"><label>饮用者署名</label><input type="text" id="labCustomerName" placeholder="输入昵称生成专属小票" /></div>
-            <div class="lab-actions"><button class="btn btn-primary" id="printReceiptBtn" type="button">打印热敏处方小票</button><button class="btn btn-ghost" id="labAddToCartBtn" type="button">加入点单袋</button></div>
+    </div>
+
+    <div class="showcase-grid" id="productGrid"></div>
+
+    <!-- Live Liquid Anatomy & Secret Hack Inspector -->
+    <div class="anatomy-panel reveal" id="anatomyPanel">
+      <div class="anatomy-left">
+        <div class="anatomy-badge" id="anatomyBrand">STARBUCKS</div>
+        <h3 class="anatomy-title" id="anatomyTitle">馥芮白 · Flat White</h3>
+        <p class="anatomy-story" id="anatomyStory"></p>
+
+        <div class="anatomy-stats-row">
+          <div class="stat-box">
+            <span class="stat-k">咖啡因含量</span>
+            <strong class="stat-v" id="anatomyCaf">195 mg</strong>
           </div>
-          <div class="receipt-wrap"><div class="thermal-receipt" id="thermalReceipt"><div class="rec-head"><strong id="recBrand">LUCKIN CRAFT LAB</strong><span id="recOrderNo">#RP-2026-8801</span></div><div class="rec-meta"><span>顾客：<strong id="recCustomer">VIP 咖啡鉴赏家</strong></span><span id="recTime">12:00:00</span></div><h3 class="rec-drink" id="recDrinkName">生椰拿铁</h3><ul class="rec-specs" id="recSpecs"></ul><div class="rec-stats"><div><span>咖啡因</span><strong id="recCaf">150 mg</strong></div><div><span>热量</span><strong id="recKcal">165 kcal</strong></div><div><span>券后参考</span><strong id="recCoupon">¥9.9</strong></div></div><div class="rec-total"><span>预估原价</span><strong id="recPrice">¥19.00</strong></div></div></div>
+          <div class="stat-box">
+            <span class="stat-k">热量估算</span>
+            <strong class="stat-v" id="anatomyKcal">170 kcal</strong>
+          </div>
+          <div class="stat-box">
+            <span class="stat-k">参考售价</span>
+            <strong class="stat-v" id="anatomyPrice">¥38</strong>
+          </div>
+          <div class="stat-box">
+            <span class="stat-k">烘焙深度</span>
+            <strong class="stat-v" id="anatomyRoast">中深烘</strong>
+          </div>
+        </div>
+
+        <div class="secret-hack-box">
+          <div class="secret-hack-header">
+            <span>🔓 咖啡师私藏隐藏点单暗号</span>
+            <button class="copy-hack-btn" id="copyHackBtn">一键复制暗号</button>
+          </div>
+          <p class="secret-hack-text" id="anatomyHack"></p>
+        </div>
+
+        <div class="anatomy-actions">
+          <button class="btn btn-primary" id="anatomyAddCart">加入今日点单袋</button>
+          <button class="btn btn-outline" id="anatomyToLab">送入特调工坊魔改</button>
         </div>
       </div>
-    </section>
-  </main>
+
+      <div class="anatomy-visual">
+        <div class="cup-xray-stage">
+          <div class="xray-cup-glass">
+            <div class="xray-layers" id="xrayLayers"></div>
+            <div class="xray-glare"></div>
+          </div>
+          <div class="xray-legend" id="xrayLegend"></div>
+        </div>
+      </div>
+
+      <div class="anatomy-radar-wrap">
+        <div class="radar-title">六维风味雷达 · FLAVOR PROFILE</div>
+        <svg class="radar-svg" id="anatomyRadar" viewBox="0 0 260 260"></svg>
+        <div class="tasting-notes" id="anatomyNotes"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: AI FLAVOR SOMMELIER COMPASS -->
+  <section class="section sommelier-section" id="sommelier">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">02 / AI TASTE COMPASS</div>
+      <h2 class="section-title">30秒 · 锁定你的本命咖啡</h2>
+      <p class="section-subtitle">基于风味向量算法，在星巴克的醇厚质感与瑞幸的创意爆品之间精准匹配今日最佳解。</p>
+    </div>
+
+    <div class="sommelier-shell reveal">
+      <div class="sommelier-controls">
+        <div class="quiz-step">
+          <div class="quiz-label"><span class="step-num">01</span> 此刻的续命场景</div>
+          <div class="quiz-options" data-quiz="mood">
+            <button class="quiz-chip active" data-val="wake">⚡ 早八急救 · 强提神</button>
+            <button class="quiz-chip" data-val="chill">🌿 午后松弛 · 氛围感</button>
+            <button class="quiz-chip" data-val="sweet">🍮 甜品替代 · 治愈系</button>
+            <button class="quiz-chip" data-val="fresh">🍊 酷爽解腻 · 清新果茶</button>
+          </div>
+        </div>
+
+        <div class="quiz-step">
+          <div class="quiz-label"><span class="step-num">02</span> 奶感与质地偏好</div>
+          <div class="quiz-options" data-quiz="milk">
+            <button class="quiz-chip active" data-val="creamy">🥛 丝绒厚奶 / 浓郁乳感</button>
+            <button class="quiz-chip" data-val="plant">🥥 椰乳 / 燕麦植物基</button>
+            <button class="quiz-chip" data-val="clean">🧊 零奶清爽 / 纯粹黑咖</button>
+          </div>
+        </div>
+
+        <div class="quiz-step">
+          <div class="quiz-label"><span class="step-num">03</span> 预算与风味倾向</div>
+          <div class="slider-group">
+            <div class="slider-row">
+              <span>苦醇浓度</span>
+              <input type="range" id="prefIntensity" min="1" max="10" value="6" />
+              <span class="slider-val" id="prefIntensityVal">6/10</span>
+            </div>
+            <div class="slider-row">
+              <span>甜度容忍</span>
+              <input type="range" id="prefSweetness" min="1" max="10" value="5" />
+              <span class="slider-val" id="prefSweetnessVal">5/10</span>
+            </div>
+            <div class="slider-row">
+              <span>预算偏向</span>
+              <div class="budget-toggle">
+                <button class="mini-chip active" data-budget="any">不限</button>
+                <button class="mini-chip" data-budget="value">极致性价比 (¥9.9-20)</button>
+                <button class="mini-chip" data-budget="premium">臻选体验 (¥30+)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sommelier-result" id="sommelierResult">
+        <div class="match-ring-wrap">
+          <svg class="match-ring" viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+            <circle class="ring-fg" id="matchRingFg" cx="60" cy="60" r="52"></circle>
+          </svg>
+          <div class="match-score">
+            <span id="matchScoreNum">97</span><small>%</small>
+            <div class="match-sub">风味契合</div>
+          </div>
+        </div>
+        <div class="result-brand" id="resultBrand">LUCKIN COFFEE</div>
+        <h3 class="result-name" id="resultName">生椰拿铁</h3>
+        <p class="result-reason" id="resultReason"></p>
+        <div class="result-runnerup" id="resultRunnerup"></div>
+        <div class="result-cta-group">
+          <button class="btn btn-primary" id="resultView3D">在 3D 舞台预览这杯</button>
+          <button class="btn btn-glass" id="resultAddCart">立即加入点单袋</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: HEAD-TO-HEAD VS ARENA -->
+  <section class="section arena-section" id="arena">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">03 / HEAD-TO-HEAD DUEL</div>
+      <h2 class="section-title">双雄巅峰对决台</h2>
+      <p class="section-subtitle">自选星巴克与瑞幸任意两款代表作，同屏叠加六维风味雷达、咖啡因性价比与真实口感拆解。</p>
+    </div>
+
+    <div class="arena-board reveal">
+      <div class="fighter-col sbx-col">
+        <div class="fighter-tag">CHALLENGER A · STARBUCKS</div>
+        <select class="fighter-select" id="arenaSelectSbx"></select>
+        <div class="fighter-card" id="arenaCardSbx"></div>
+      </div>
+
+      <div class="arena-center">
+        <div class="vs-badge">VS</div>
+        <svg class="arena-radar" id="arenaRadar" viewBox="0 0 300 300"></svg>
+        <div class="arena-legend">
+          <span class="leg-sbx"><i></i> 星巴克选手</span>
+          <span class="leg-lkn"><i></i> 瑞幸选手</span>
+        </div>
+        <div class="arena-verdict" id="arenaVerdict"></div>
+        <div class="vote-widget">
+          <div class="vote-title">今日战队投票 · 你站哪一杯？</div>
+          <div class="vote-buttons">
+            <button class="vote-btn sbx-vote" id="voteSbxBtn">投给星巴克</button>
+            <button class="vote-btn lkn-vote" id="voteLknBtn">投给瑞幸</button>
+          </div>
+          <div class="vote-bar">
+            <div class="vote-fill-sbx" id="voteFillSbx" style="width:48%">48%</div>
+            <div class="vote-fill-lkn" id="voteFillLkn" style="width:52%">52%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fighter-col lkn-col">
+        <div class="fighter-tag">CHALLENGER B · LUCKIN</div>
+        <select class="fighter-select" id="arenaSelectLkn"></select>
+        <div class="fighter-card" id="arenaCardLkn"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: INTERACTIVE BARISTA LAB & THERMAL RECEIPT -->
+  <section class="section lab-section" id="lab">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">04 / CUSTOM BARISTA LAB</div>
+      <h2 class="section-title">客制化特调工坊 & 热敏小票机</h2>
+      <p class="section-subtitle">自由调配浓缩份数、奶基底、糖度与顶料，实时演算热量、咖啡因与价格，打印你的专属咖啡处方。</p>
+    </div>
+
+    <div class="lab-grid reveal">
+      <div class="lab-configurator">
+        <div class="lab-group">
+          <label>选择基底饮品</label>
+          <select id="labBaseDrink" class="lab-select"></select>
+        </div>
+
+        <div class="lab-group">
+          <label>浓缩份数 · ESPRESSO SHOTS</label>
+          <div class="lab-chips" data-lab="shots">
+            <button class="lab-chip" data-val="1" data-price="0" data-caf="75" data-kcal="5">单份轻盈 (1 Shot)</button>
+            <button class="lab-chip active" data-val="2" data-price="0" data-caf="150" data-kcal="10">标准双份 (2 Shots)</button>
+            <button class="lab-chip" data-val="3" data-price="4" data-caf="225" data-kcal="15">三份狂飙 (+¥4)</button>
+            <button class="lab-chip" data-val="ristretto" data-price="3" data-caf="165" data-kcal="10">精萃 Ristretto (+¥3)</button>
+          </div>
+        </div>
+
+        <div class="lab-group">
+          <label>乳品 / 植物基 · MILK BASE</label>
+          <div class="lab-chips" data-lab="milk">
+            <button class="lab-chip active" data-val="whole" data-price="0" data-kcal="110">全脂鲜牛乳</button>
+            <button class="lab-chip" data-val="oat" data-price="4" data-kcal="95">OATLY 燕麦奶 (+¥4)</button>
+            <button class="lab-chip" data-val="coconut" data-price="3" data-kcal="105">冷榨厚椰乳 (+¥3)</button>
+            <button class="lab-chip" data-val="none" data-price="-2" data-kcal="0">纯水/冰块 (零乳)</button>
+          </div>
+        </div>
+
+        <div class="lab-group">
+          <label>冰量 & 糖度 · TEMP & SWEET</label>
+          <div class="lab-dual-row">
+            <div class="lab-chips" data-lab="ice">
+              <button class="lab-chip active" data-val="标准冰">标准冰</button>
+              <button class="lab-chip" data-val="少冰">少冰</button>
+              <button class="lab-chip" data-val="去冰">去冰</button>
+              <button class="lab-chip" data-val="热饮">热饮</button>
+            </div>
+            <div class="lab-chips" data-lab="sweet">
+              <button class="lab-chip" data-val="0" data-kcal="0">不另外加糖</button>
+              <button class="lab-chip active" data-val="50" data-kcal="45">半糖</button>
+              <button class="lab-chip" data-val="100" data-kcal="90">标准甜</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-group">
+          <label>灵魂顶料 · TOPPING</label>
+          <div class="lab-chips" data-lab="topping">
+            <button class="lab-chip active" data-val="none" data-price="0" data-kcal="0">无顶料</button>
+            <button class="lab-chip" data-val="coldfoam" data-price="4" data-kcal="55">海盐绵云奶盖 (+¥4)</button>
+            <button class="lab-chip" data-val="caramel" data-price="3" data-kcal="45">焦糖淋酱 (+¥3)</button>
+            <button class="lab-chip" data-val="cream" data-price="4" data-kcal="95">稀奶油雪顶 (+¥4)</button>
+          </div>
+        </div>
+
+        <div class="lab-group">
+          <label>专属杯贴署名</label>
+          <input type="text" id="labCustomerName" class="lab-input" placeholder="输入你的名字或今日暗号（如：早八战神）" maxlength="16" />
+        </div>
+
+        <div class="lab-submit-row">
+          <button class="btn btn-primary" id="printReceiptBtn">🖨️ 打印热敏点单小票</button>
+          <button class="btn btn-glass" id="labAddToCartBtn">加入点单袋</button>
+        </div>
+      </div>
+
+      <!-- Thermal Receipt Printer Preview -->
+      <div class="receipt-stage">
+        <div class="printer-slot"></div>
+        <div class="thermal-receipt" id="thermalReceipt">
+          <div class="receipt-top-edge"></div>
+          <div class="receipt-header">
+            <div class="receipt-logo" id="recBrand">ROAST & PULSE LAB</div>
+            <div class="receipt-sub">CRAFT COFFEE PRESCRIPTION</div>
+            <div class="receipt-meta">
+              <span id="recOrderNo">#RP-2026-0842</span>
+              <span id="recTime">12:30:00</span>
+            </div>
+          </div>
+          <div class="receipt-divider">- - - - - - - - - - - - - - - - -</div>
+          <div class="receipt-customer">FOR: <strong id="recCustomer">VIP 咖啡鉴赏家</strong></div>
+          <div class="receipt-main-item">
+            <span id="recDrinkName">生椰拿铁</span>
+            <span id="recPrice">¥19.00</span>
+          </div>
+          <ul class="receipt-specs" id="recSpecs"></ul>
+          <div class="receipt-divider">- - - - - - - - - - - - - - - - -</div>
+          <div class="receipt-nutrition">
+            <div><span>CAFFEINE</span><strong id="recCaf">150 mg</strong></div>
+            <div><span>ENERGY</span><strong id="recKcal">160 kcal</strong></div>
+            <div><span>COUPON EST.</span><strong id="recCoupon">¥9.9 / 享券</strong></div>
+          </div>
+          <div class="receipt-barcode" id="recBarcode"></div>
+          <div class="receipt-footer-msg">KEEP CALM & EXTRACT AT 9 BAR</div>
+          <div class="receipt-bottom-edge"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="brand-text">ROAST<span class="brand-amp">&</span>PULSE</div>
+        <p>星巴克臻选美学 × 瑞幸爆品实验室 · 互动式咖啡产品推荐概念体验站</p>
+      </div>
+      <div class="footer-note">
+        <span>Built with Three.js · Procedural PBR Shaders · Web Audio Synth</span>
+        <span>本页面为创意营销交互展示概念页，价格与营养数据仅供风味参考。</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CART DRAWER -->
   <div class="cart-backdrop" id="cartBackdrop"></div>
-  <aside class="cart-drawer" id="cartDrawer"><div class="cart-head"><h3>今日咖啡点单袋</h3><button class="cart-close" id="cartCloseBtn" type="button">×</button></div><div class="coupon-bar"><button class="coupon-btn" id="toggleLuckinCoupon" type="button">🎫 应用模拟优惠券（瑞幸 9.9 / 星巴克满减）</button></div><div class="cart-items" id="cartItems"><div class="cart-empty">点单袋还是空的，快去挑一杯吧 ☕</div></div><div class="cart-footer"><div class="cart-summary-row"><span>总咖啡因</span><strong id="cartTotalCaf">0 mg</strong></div><div class="cart-summary-row"><span>预计应付</span><strong class="cart-total-price" id="cartTotalPrice">¥0</strong></div><button class="btn btn-primary full-width" id="checkoutBtn" type="button">模拟下单</button></div></aside>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3>今日咖啡点单袋</h3>
+      <button class="close-btn" id="cartCloseBtn">✕</button>
+    </div>
+    <div class="cart-coupon-bar">
+      <button class="coupon-toggle" id="toggleLuckinCoupon">🎫 应用模拟优惠券（瑞幸 9.9 / 星巴克满减）</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">点单袋还是空的，快去挑一杯吧 ☕</div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-summary-row"><span>总咖啡因</span><strong id="cartTotalCaf">0 mg</strong></div>
+      <div class="cart-summary-row"><span>预计应付</span><strong class="cart-total-price" id="cartTotalPrice">¥0</strong></div>
+      <button class="btn btn-primary full-width" id="checkoutBtn">模拟下单 & 触发庆祝彩带</button>
+    </div>
+  </aside>
+
+  <!-- Toast Notification -->
   <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Three.js UMD Build (r147 with r128 fallback for guaranteed global THREE) -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
-  <script>if(typeof THREE==='undefined'){document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');}</script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+    }
+  </script>
   <script src="scene3d.js"></script>
-  <script src="drinks-p1.js"></script>
-  <script src="drinks-p2.js"></script>
-  <script src="app-hud.js"></script>
-  <script src="app-sommelier-arena.js"></script>
-  <script src="app-lab-cart.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
